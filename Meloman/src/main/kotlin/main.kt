@@ -24,7 +24,7 @@ fun purchaseWithDiscount(purchaseAmount: Double): Double {
     }
 }
 
-fun periodFromLastPurchase(regularCustomerLastPurchaseDate: LocalDate?) {
+fun periodFromLastPurchase(regularCustomerLastPurchaseDate: LocalDate?): Period? {
     val currentDate = LocalDate.now()     // parse the date with a suitable formatter
     var regularCustomerLastPurchaseDate: LocalDate? = LocalDate.parse("2023-01-01")//Введите дату последней покупки покупателем
     val period = Period.between(regularCustomerLastPurchaseDate, currentDate)
@@ -32,16 +32,17 @@ return period
 }
 
 
-fun regularCustomerDiscount(regularCustomerLastPurchaseDate: LocalDate?, purchaseWithDiscount: Double): Double {
+fun regularCustomerDiscount(purchaseWithDiscount: Double): Double {
+
     return when {
-        period.getDays() > 30 -> purchaseWithDiscount * 0.99 //При этом постоянные пользователи, то есть те, кто покупает ежемесячно, дополнительно получают 1% скидки сверху.
+        (periodFromLastPurchase()) > 30 -> purchaseWithDiscount * 0.99 //При этом постоянные пользователи, то есть те, кто покупает ежемесячно, дополнительно получают 1% скидки сверху.
         else -> purchaseWithDiscount * 1.0
     }
 }
 
-//fun ChronoPeriod.compareTo(i: Int) {
-//
-//}
+fun ChronoPeriod.compareTo(i: Int) {
+
+}
 
 
 
