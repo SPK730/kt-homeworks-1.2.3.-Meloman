@@ -1,18 +1,18 @@
 import java.time.LocalDate
+import java.time.LocalDate.*
 import java.time.Period
 import java.time.chrono.ChronoPeriod
 
-fun main() {
+public fun main() {
     val purchaseAmount: Double = 10040.0 //Введите сумму покупки покупателем
-    var regularCustomerLastPurchaseDate: LocalDate? = LocalDate.parse("2023-03-01")//Введите дату последней покупки покупателем
-    var period: Int
+    var regularCustomerLastPurchaseDate: LocalDate? = parse("2023-03-03")//Введите дату последней покупки покупателем
 
     println("Сумма покупки " + (purchaseAmount) + " руб.")
     println("Сумма покупки со скидкой " + (purchaseWithDiscount(purchaseAmount)) + " руб.")
-//    println("Сумма покупки со скидкой постоянного покупателя " + (regularCustomerDiscount(regularCustomerLastPurchaseDate,
-        //purchaseWithDiscount(purchaseAmount))) + " руб.")
-    println("Текущая дата покупки $regularCustomerLastPurchaseDate")
-    println("Дней с прошлой покупки " + (periodFromLastPurchase(regularCustomerLastPurchaseDate)))
+    println("Дата последней покупки $regularCustomerLastPurchaseDate")
+    println("Дней с прошлой покупки " + (periodFromLastPurchase()))
+    println("Сумма покупки со скидкой постоянного покупателя " + (regularCustomerDiscount(purchaseWithDiscount(purchaseAmount))) + " руб.")
+
 }
 
 fun purchaseWithDiscount(purchaseAmount: Double): Double {
@@ -24,19 +24,17 @@ fun purchaseWithDiscount(purchaseAmount: Double): Double {
     }
 }
 
-fun periodFromLastPurchase(regularCustomerLastPurchaseDate: LocalDate?): Period? {
+fun periodFromLastPurchase(): Int {
     val currentDate = LocalDate.now()     // parse the date with a suitable formatter
-    var regularCustomerLastPurchaseDate: LocalDate? = LocalDate.parse("2023-01-01")//Введите дату последней покупки покупателем
+    var regularCustomerLastPurchaseDate: LocalDate? = parse("2023-03-03")//Введите дату последней покупки покупателем
     val period = Period.between(regularCustomerLastPurchaseDate, currentDate)
-return period
+    return period.days + period.months * 30
 }
 
-
 fun regularCustomerDiscount(purchaseWithDiscount: Double): Double {
-
     return when {
-        (periodFromLastPurchase()) > 30 -> purchaseWithDiscount * 0.99 //При этом постоянные пользователи, то есть те, кто покупает ежемесячно, дополнительно получают 1% скидки сверху.
-        else -> purchaseWithDiscount * 1.0
+        periodFromLastPurchase() < 30.0 -> purchaseWithDiscount * 0.99 //При этом постоянные пользователи, то есть те, кто покупает ежемесячно, дополнительно получают 1% скидки сверху.
+        else -> purchaseWithDiscount * 1.0 //скидки нет
     }
 }
 
